@@ -1,0 +1,8 @@
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotManagerLayer\bin\Debug\netcoreapp3.1\ParkingLotManagerLayer.deps.json
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotManagerLayer\bin\Debug\netcoreapp3.1\ParkingLotManagerLayer.dll
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotManagerLayer\bin\Debug\netcoreapp3.1\ParkingLotManagerLayer.pdb
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotManagerLayer\obj\Debug\netcoreapp3.1\ParkingLotManagerLayer.csprojAssemblyReference.cache
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotManagerLayer\obj\Debug\netcoreapp3.1\ParkingLotManagerLayer.AssemblyInfoInputs.cache
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotManagerLayer\obj\Debug\netcoreapp3.1\ParkingLotManagerLayer.AssemblyInfo.cs
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotManagerLayer\obj\Debug\netcoreapp3.1\ParkingLotManagerLayer.dll
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotManagerLayer\obj\Debug\netcoreapp3.1\ParkingLotManagerLayer.pdb

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ParkingLotCommanLayer\ParkingLotCommanLayer.csproj" />
+    <ProjectReference Include="..\ParkingLotRepoLayer\ParkingLotRepoLayer.csproj" />
+  </ItemGroup>
+
+</Project>
