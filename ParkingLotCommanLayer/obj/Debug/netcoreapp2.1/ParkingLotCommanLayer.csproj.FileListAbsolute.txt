@@ -5,3 +5,4 @@ C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotCommanLayer\obj\Debug\ne
 C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotCommanLayer\obj\Debug\netcoreapp2.1\ParkingLotCommanLayer.AssemblyInfo.cs
 C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotCommanLayer\obj\Debug\netcoreapp2.1\ParkingLotCommanLayer.dll
 C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotCommanLayer\obj\Debug\netcoreapp2.1\ParkingLotCommanLayer.pdb
+C:\Users\Srinidhi\source\repos\ParkingLotAPIs\ParkingLotCommanLayer\obj\Debug\netcoreapp2.1\ParkingLotCommanLayer.csprojAssemblyReference.cache

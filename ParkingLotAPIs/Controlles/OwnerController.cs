@@ -15,34 +15,34 @@ namespace ParkingLotAPIs.Controlles
     public class OwnerController : ControllerBase
     {
         public IParkingManager _Manager;
+        MSMQ msmq = new MSMQ();
         public OwnerController(IParkingManager manager)
         {
             this._Manager = manager;
         }
         
         [HttpPost]
-        [Route("Parkinglot")]
-        public IActionResult Parkinglot(Parking parking)
+        public IActionResult ParkingDitails(Parking parking)
         {
-            var item = this._Manager.Parkinglot(parking);
+            var item = this._Manager.ParkingDitails(parking);
             return this.Ok(item);
         }
 
         [HttpGet]
-        [Route("GetDetail")]
-        public IActionResult GetDetails()
+        [Route("ParkingStatus")]
+        public IActionResult ParkingStatus()
         {
             Log.Information("list is displayed");
-            var item = this._Manager.GetDetail();
+            var item = this._Manager.ParkingStatus();
             return this.Ok(item);
         }
 
         [HttpGet]
-        [Route("GetParkingById")]
-        public IActionResult GetParkingById(int parkingId)
+        [Route("SearchById")]
+        public IActionResult SearchById(int parkingId)
         {
             Log.Information("list is displayed");
-            var item = this._Manager.GetParkingById(parkingId);
+            var item = this._Manager.SearchById(parkingId);
             return this.Ok(item);
         }
         [HttpPut]
@@ -50,6 +50,7 @@ namespace ParkingLotAPIs.Controlles
         public IActionResult UnParking(int parkingID)
         {
             var item = this._Manager.UnParking(parkingID);
+            msmq.SendMessage("UnParking vehicle:", item);
             return this.Ok(item);
         }
 

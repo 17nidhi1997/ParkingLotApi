@@ -17,8 +17,10 @@ namespace ParkingLotAPIs
     {
         public static void Main(string[] args)
         {
-           // ParkingRepository parking = new ParkingRepository();
-           // parking.Connection();
+            // ParkingRepository parking = new ParkingRepository();
+            // parking.Connection();
+            MSMQ message = new MSMQ();
+            string value=message.ReceiveMessage();
             CreateWebHostBuilder(args).Build().Run();
         }
 

@@ -15,34 +15,53 @@ namespace ParkingLotAPIs.Controlles
     public class PoliceController : ControllerBase
     {
         public IParkingManager _Manager;
+        MSMQ msmq = new MSMQ();
         public PoliceController(IParkingManager manager)
         {
             this._Manager = manager;
         }
 
         [HttpPost]
-        [Route("Parkinglot")]
-        public IActionResult Parkinglot(Parking parking)
+        [Route("ParkingDitails")]
+        public IActionResult ParkingDitails(Parking parking)
         {
-            var item = this._Manager.Parkinglot(parking);
+            var item = this._Manager.ParkingDitails(parking);
             return this.Ok(item);
         }
 
         [HttpGet]
-        [Route("GetParkingByNum")]
-        public IActionResult GetParkingByNum(String Vehiclenum)
+        [Route("SearchById")]
+        public IActionResult SearchById(int parkingId)
         {
             Log.Information("list is displayed");
-            var item = this._Manager.GetParkingByNum(Vehiclenum);
+            var item = this._Manager.SearchById(parkingId);
             return this.Ok(item);
         }
 
         [HttpGet]
-        [Route("GetParkingByVType")]
-        public IActionResult GetParkingByVType(int VehicleType)
+        [Route("SearchByNum")]
+        public IActionResult SearchByNum(String Vehiclenum)
         {
             Log.Information("list is displayed");
-            var item = this._Manager.GetParkingByVType(VehicleType);
+            var item = this._Manager.SearchByNum(Vehiclenum);
+            return this.Ok(item);
+        }
+
+        [HttpGet]
+        [Route("SearchByVType")]
+        public IActionResult SearchByVType(int VehicleType)
+        {
+            Log.Information("list is displayed");
+            var item = this._Manager.SearchByVType(VehicleType);
+            return this.Ok(item);
+        }
+
+        [HttpPut]
+        [Route("UnParking")]
+        public IActionResult UnParking(int parkingID)
+        {
+            var item = this._Manager.UnParking(parkingID);
+            msmq.SendMessage("UnParking vehicle:", item);
             return this.Ok(item);
         }
     }

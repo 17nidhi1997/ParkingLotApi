@@ -1,5 +1,7 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using Microsoft.Extensions.Configuration;
+using Oracle.ManagedDataAccess.Client;
 using ParkingLotCommanLayer.Models;
+using ParkingLotCommanLayer.Quaries;
 using ParkingLotRepoLayer.IRepository;
 using System;
 using System.Collections.Generic;
@@ -12,11 +14,16 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
 {
     public class ParkingRepository : IParkingRepository
     {
-        public IEnumerable<Parking> GetDetail()
+        private readonly IConfiguration configuration;
+        public ParkingRepository(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+        public IEnumerable<Parking> ParkingStatus()
         {
             List<Parking> list = new List<Parking>();
-            var commandText = "SELECT * FROM PARKINGLOT.Parking";
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
+            var commandText = Queries.ParkingStatusQuery;
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
             using (OracleCommand cmd = new OracleCommand(commandText, _db))
             {
                 cmd.Connection = _db;
@@ -42,11 +49,11 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
             }
         }
 
-        public IEnumerable<Parking> GetParkingById(int parkingId)
+        public IEnumerable<Parking> SearchById(int parkingId)
         {
             List<Parking> list = new List<Parking>();
-            var commandText = "Select * from PARKINGLOT.Parking where Id=" + parkingId + "";
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
+            var commandText = Queries.SearchByIdQuery + parkingId+"";
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
             using (OracleCommand cmd = new OracleCommand(commandText, _db))
             {
                 cmd.Connection = _db;
@@ -71,42 +78,11 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
                 return list;
             }
         }
-        public IEnumerable<Parking> GetParkingByNum(String Vehiclenum)
+        public IEnumerable<Parking> SearchByNum(String Vehiclenum)
         {
             List<Parking> list = new List<Parking>();
-            var commandText = "Select * from PARKINGLOT.Parking where VehicleNumber=" + Vehiclenum + "";
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
-            using (OracleCommand cmd = new OracleCommand(commandText, _db))
-            {
-                cmd.Connection = _db;
-                cmd.CommandType = CommandType.Text;
-                _db.Open();
-                OracleDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    Parking parking = new Parking();
-                    parking.Id = Convert.ToInt32(reader["Id"]);
-                    parking.ParkingSLot = Convert.ToInt32(reader["ParkingSLot"]);
-                    parking.VehicleNumber = reader["VehicleNumber"].ToString();
-                    parking.EntryTime = Convert.ToDateTime(reader["EntryTime"]);
-                    parking.PVehicleId = Convert.ToInt32(reader["PVehicleId"]);
-                    parking.PParkingId = Convert.ToInt32(reader["PParkingId"]);
-                    parking.PRoleId = Convert.ToInt32(reader["PRoleId"]);
-                    parking.Disabled = reader["Disabled"].ToString();
-                    parking.ExitTime = Convert.ToDateTime(reader["ExitTime"]);
-                    list.Add(parking);
-                }
-                _db.Close();
-                return list;
-            }
-        }
-
-
-        public IEnumerable<Parking> GetParkingByVType(int VehicleType)
-        {
-            List<Parking> list = new List<Parking>();
-            var commandText = "Select * from PARKINGLOT.Parking where PVehicleId=" + VehicleType + "";
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
+            var commandText = Queries.SearchByNumQuery + Vehiclenum + "";
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
             using (OracleCommand cmd = new OracleCommand(commandText, _db))
             {
                 cmd.Connection = _db;
@@ -132,10 +108,57 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
             }
         }
 
-        public object Parkinglot(Parking parking)
+        public object parlingLot()
         {
-            var commandText = "insert into PARKINGLOT.Parking(Id ,ParkingSLot ,VehicleNumber ,EntryTime ,PVehicleId ,PParkingId ,PRoleId ,Disabled ,ExitTime) values(:Id,:ParkingSLot,:VehicleNumber,:EntryTime,:PVehicleId,:PParkingId,:PRoleId,:Disabled,:ExitTime)";
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
+            OracleConnection _db=new OracleConnection(configuration.GetConnectionString("UserDbConnection"));
+            _db.Open();
+            OracleCommand cmd = new OracleCommand(Queries.parlingLotQuery, _db);
+            var count = cmd.ExecuteScalar();
+            cmd.Dispose();
+            cmd.Dispose();
+           
+            OracleCommand cmd1 = new OracleCommand(Queries.parlingLotQuery1, _db);
+            var counts = cmd1.ExecuteScalar();
+            cmd.Dispose();
+            cmd.Dispose();
+            var parkings = Convert.ToInt32( count ) - Convert.ToInt32(counts);
+            var parkingLotDetails = 400 - parkings;
+            return parkingLotDetails;
+        }
+        public IEnumerable<Parking> SearchByVType(int VehicleType)
+        {
+            List<Parking> list = new List<Parking>();
+            var commandText = Queries.SearchByVTypeQuery + VehicleType + "";
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
+            using (OracleCommand cmd = new OracleCommand(commandText, _db))
+            {
+                cmd.Connection = _db;
+                cmd.CommandType = CommandType.Text;
+                _db.Open();
+                OracleDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Parking parking = new Parking();
+                    parking.Id = Convert.ToInt32(reader["Id"]);
+                    parking.ParkingSLot = Convert.ToInt32(reader["ParkingSLot"]);
+                    parking.VehicleNumber = reader["VehicleNumber"].ToString();
+                    parking.EntryTime = Convert.ToDateTime(reader["EntryTime"]);
+                    parking.PVehicleId = Convert.ToInt32(reader["PVehicleId"]);
+                    parking.PParkingId = Convert.ToInt32(reader["PParkingId"]);
+                    parking.PRoleId = Convert.ToInt32(reader["PRoleId"]);
+                    parking.Disabled = reader["Disabled"].ToString();
+                    parking.ExitTime = Convert.ToDateTime(reader["ExitTime"]);
+                    list.Add(parking);
+                }
+                _db.Close();
+                return list;
+            }
+        }
+
+        public object ParkingDitails(Parking parking)
+        {
+            var commandText = Queries.ParkingDitailsQuery;
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
             using (OracleCommand cmd = new OracleCommand(commandText, _db))
             {
                 cmd.Connection = _db;
@@ -151,14 +174,14 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
                 _db.Open();
                 cmd.ExecuteNonQuery();
                 _db.Close();
-                return "sucessfull added";
+                return parking.Id+ "=Parking ID is sucessfull added";
             }
         }
 
         public object UnParking(int parkingID)
         {
-            var commandText = "UPDATE PARKINGLOT.Parking SET Disabled = 'TRUE',ExitTime=current_timestamp WHERE ID=" + parkingID + "";
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
+            var commandText = Queries.UnParkingUpdateQuery + parkingID + "";
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
             using (OracleCommand cmd = new OracleCommand(commandText, _db))
             {
                 cmd.Connection = _db;
@@ -172,8 +195,8 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
 
             List<Parking> list = new List<Parking>();
             Parking parking = new Parking();
-            var commandTexts = "Select * from PARKINGLOT.Parking where Id=" + parkingID + "";
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
+            var commandTexts = Queries.UnParkingSelectQuery + parkingID + ""; 
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
             using (OracleCommand cmd = new OracleCommand(commandTexts, _db))
             {
                 cmd.Connection = _db;
@@ -182,7 +205,6 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
                 OracleDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    //Parking parking = new Parking();
                     parking.Id = Convert.ToInt32(reader["Id"]);
                     parking.ParkingSLot = Convert.ToInt32(reader["ParkingSLot"]);
                     parking.VehicleNumber = reader["VehicleNumber"].ToString();
@@ -199,11 +221,10 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
             Roles roles = new Roles();
             System.TimeSpan diff = parking.ExitTime.Subtract(parking.EntryTime);
             var differenceInTime = diff.TotalHours;
-            // return differenceInTime;
             List<Roles> list1 = new List<Roles>();
-            var Charges = "Select Charges from Roles where RolesId =" + parking.PRoleId + "";
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
-            using (OracleCommand cmd = new OracleCommand(Charges, _db))
+            var commandTextss = Queries.UnParkingRolesQuery + parking.PRoleId + "";
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
+            using (OracleCommand cmd = new OracleCommand(commandTextss, _db))
             {
                 cmd.Connection = _db;
                 cmd.CommandType = CommandType.Text;
@@ -219,21 +240,19 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
                 _db.Close();
                 if (differenceInTime <= 1)
                 {
-                    return Charges;
+                    return roles.Charges;
                 }
                 else
                 {
-                    return Math.Round(Convert.ToDouble(Charges) * differenceInTime);
+                    return Math.Round(Convert.ToDouble(roles.Charges) * differenceInTime);
                 }
             }
         }
-    
-
-        
+         
         public void Connection()
         {
             Console.WriteLine("Starting.\r\n");
-            using (var _db = new OracleConnection("User Id=system;Password=system;Data Source=localhost:1521/xe"))
+            using (var _db = new OracleConnection(configuration.GetConnectionString("UserDbConnection")))
             {
                 Console.WriteLine("Open connection...");
                 _db.Open();
@@ -260,6 +279,8 @@ namespace ParkingLotRepoLayer.RepositoryImplementation
                 _db.Close();
             }
         }
+
+       
     }
 }
 

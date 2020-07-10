@@ -8,11 +8,12 @@ namespace ParkingLotManagerLayer.IManager
 {
    public interface IParkingManager
     {
-        object GetDetail();
-        object GetParkingById(int parkingId);
-        object GetParkingByNum(String Vehiclenum);
-        object GetParkingByVType(int VehicleType);
-        object Parkinglot(Parking parking);
+        object ParkingStatus();
+        object SearchById(int parkingId);
+        object SearchByNum(String Vehiclenum);
+        object SearchByVType(int VehicleType);
+        object ParkingDitails(Parking parking);
         object UnParking(int parkingID);
+        object parlingLot();
     }
 }

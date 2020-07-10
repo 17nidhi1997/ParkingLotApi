@@ -16,34 +16,39 @@ namespace ParkingLotManagerLayer.ManegerImplementation
             _Parking = parkings;
         }
 
-        public object GetDetail()
+        public object ParkingStatus()
         {
-            return this._Parking.GetDetail();
+            return this._Parking.ParkingStatus();
         }
 
-        public object GetParkingById(int parkingId)
+        public object SearchById(int parkingId)
         {
-            return this._Parking.GetParkingById(parkingId);
+            return this._Parking.SearchById(parkingId);
         }
 
-        public object GetParkingByNum(String Vehiclenum)
+        public object SearchByNum(String Vehiclenum)
         {
-            return this._Parking.GetParkingByNum(Vehiclenum);
+            return this._Parking.SearchByNum(Vehiclenum);
         }
 
-        public object GetParkingByVType(int VehicleType)
+        public object SearchByVType(int VehicleType)
         {
-            return this._Parking.GetParkingByVType(VehicleType);
+            return this._Parking.SearchByVType(VehicleType);
         }
 
-        public object Parkinglot(Parking parking)
+        public object ParkingDitails(Parking parking)
         {
-            return this._Parking.Parkinglot(parking);
+            return this._Parking.ParkingDitails(parking);
         }
 
         public object UnParking(int parkingID)
         {
             return this._Parking.UnParking(parkingID);
+        }
+
+        public object parlingLot()
+        {
+            return this._Parking.parlingLot();
         }
     }
 }

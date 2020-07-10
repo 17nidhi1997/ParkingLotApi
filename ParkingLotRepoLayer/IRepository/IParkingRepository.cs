@@ -8,11 +8,13 @@ namespace ParkingLotRepoLayer.IRepository
 {
     public interface IParkingRepository
     {
-        IEnumerable<Parking> GetDetail();
-        IEnumerable<Parking> GetParkingById(int parkingId);
-        IEnumerable<Parking> GetParkingByNum(String Vehiclenum);
-        IEnumerable<Parking> GetParkingByVType(int VehicleType);
-        object Parkinglot(Parking parking);
+        IEnumerable<Parking> ParkingStatus();
+        IEnumerable<Parking> SearchById(int parkingId);
+        IEnumerable<Parking> SearchByNum(String Vehiclenum);
+        IEnumerable<Parking> SearchByVType(int VehicleType);
+        object ParkingDitails(Parking parking);
         object UnParking(int parkingID);
+        object parlingLot();
+
     }
 }
